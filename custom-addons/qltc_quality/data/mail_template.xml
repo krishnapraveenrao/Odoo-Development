@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="mail_template_nc_raised" model="mail.template">
+            <field name="name">Non-Conformance Raised</field>
+
+            <field name="model_id"
+                   ref="qltc_quality.model_quality_nc"/>
+
+            <field name="subject">
+                Non-Conformance {{ object.name }} - {{ object.part_number }}
+            </field>
+
+            <field name="email_from">
+                {{ user.email_formatted }}
+            </field>
+
+            <field name="email_to">
+                {{ object.supplier_id.email }}
+            </field>
+
+            <field name="body_html" type="html">
+                <div>
+                    <p>
+                        Dear <t t-out="object.supplier_id.name"/>,
+                    </p>
+
+                    <p>
+                        A supplier non-conformance has been raised.
+                    </p>
+
+                    <ul>
+                        <li>
+                            <strong>Reference:</strong>
+                            <t t-out="object.name"/>
+                        </li>
+
+                        <li>
+                            <strong>Part:</strong>
+                            <t t-out="object.part_number"/>
+                        </li>
+
+                        <li>
+                            <strong>Quantity affected:</strong>
+                            <t t-out="object.quantity_affected"/>
+                        </li>
+
+                        <li>
+                            <strong>Severity:</strong>
+                            <t t-out="object.severity"/>
+                        </li>
+
+                        <li>
+                            <strong>Response required by:</strong>
+                            <t t-out="object.due_date"/>
+                        </li>
+                    </ul>
+
+                    <p>
+                        <strong>Defect description:</strong>
+                    </p>
+
+                    <p>
+                        <t t-out="object.defect_description"/>
+                    </p>
+
+                    <p>
+                        Regards,<br/>
+                        <t t-out="user.name"/>
+                    </p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

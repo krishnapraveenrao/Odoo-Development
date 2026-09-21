@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_quality_nc_engineer,quality.nc.engineer,model_quality_nc,qltc_quality.group_qa_engineer,1,1,1,0
+access_quality_nc_manager,quality.nc.manager,model_quality_nc,qltc_quality.group_quality_manager,1,1,1,1
+access_quality_defect_tag_qa,quality.defect.tag QA Engineer,model_quality_defect_tag,qltc_quality.group_qa_engineer,1,1,1,0
+access_quality_defect_tag_manager,quality.defect.tag Quality Manager,model_quality_defect_tag,qltc_quality.group_quality_manager,1,1,1,1
+access_quality_action_qa,quality.action QA Engineer,model_quality_action,qltc_quality.group_qa_engineer,1,1,1,0
+access_quality_action_manager,quality.action Quality Manager,model_quality_action,qltc_quality.group_quality_manager,1,1,1,1

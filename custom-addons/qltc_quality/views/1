@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+ <record id="seq_quality_nc" model="ir.sequence">
+    <field name="name">Supplier Non-Conformance</field>
+    <field name="code">quality.nc</field>
+    <field name="prefix">NC/%(year)s/</field>
+    <field name="padding">4</field>
+    <field name="number_next">8</field>
+ </record>
+
+    <record id="quality_nc_action" model="ir.actions.act_window">
+        <field name="name">Non-Conformances</field>
+        <field name="res_model">quality.nc</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+<menuitem id="quality_menu_root"
+          name="Supplier Quality"
+          action="quality_nc_action"
+          sequence="10"/>
+
+<menuitem id="quality_menu_operations"
+              name="Operations"
+              parent="quality_menu_root"
+              sequence="10"/>
+
+    <menuitem id="quality_nc_menu_action"
+              name="Non-Conformances"
+              parent="quality_menu_operations"
+              action="quality_nc_action"
+	      sequence="10"/>
+
+<record id="quality_nc_view_list" model="ir.ui.view">
+    <field name="name">quality.nc.list</field>
+    <field name="model">quality.nc</field>
+    <field name="arch" type="xml">
+        <list string="Non-Conformances">
+            <field name="name"/>
+            <field name="supplier_id"/>
+            <field name="part_number"/>
+            <field name="severity"/>
+            <field name="due_date"/>
+	    <field name="state"/>
+    	    <field name="action_count"/>
+    	    <field name="open_action_count"/>
+    	    <field name="is_overdue"/>
+    	</list>
+    </field>
+</record>
+
+<record id="quality_nc_view_form" model="ir.ui.view">
+    <field name="name">quality.nc.form</field>
+    <field name="model">quality.nc</field>
+    <field name="arch" type="xml">
+        <form string="Non-Conformance">
+     <header>
+        <button name="action_start_investigation"
+                string="Start Investigation"
+                type="object"
+                class="btn-primary"
+                invisible="state != 'draft'"/>
+
+        <button name="action_assign_action"
+                string="Assign Action"
+                type="object"
+                class="btn-primary"
+                invisible="state != 'investigating'"/>
+
+        <button name="action_close"
+                string="Close"
+                type="object"
+                class="btn-success"
+                invisible="state != 'action'"/>
+
+        <button name="action_reset_to_draft"
+                string="Reset to Draft"
+                type="object"
+                class="btn-secondary"
+                invisible="state == 'draft'"/>
+
+        <field name="state"
+               widget="statusbar"
+               statusbar_visible="draft,investigating,action,closed"/>
+</header>
+
+<header>
+    <button name="action_notify_supplier"
+            string="Notify Supplier"
+            type="object"
+            class="btn-primary"/>
+</header><form string="Non-Conformance">
+    <header>
+        <button name="action_notify_supplier"
+                string="Notify Supplier"
+                type="object"
+                class="btn-primary"/>
+    </header>
+
+    <sheet>
+        ...
+    </sheet>
+</form>
+
+    <sheet>
+                <div class="oe_title">
+                    <span>Reference</span>
+                    <h1>
+                        <field name="name" placeholder="NC/2026/0001"/>
+                    </h1>
+                </div>
+
+                <group>
+                    <group string="Supplier and Part">
+                        <field name="supplier_id"/>
+                        <field name="part_number"/>
+			<field name="defect_tag_ids" widget="many2many_tags"/>
+			<field name="quantity_affected"/>
+                    </group>
+
+                    <group string="Assessment">
+                        <field name="severity"/>
+                        <field name="state"/>
+                        <field name="raise_date"/>
+                        <field name="due_date"/>
+                        <field name="cost_impact"/>
+                        <field name="is_repeat"/>
+                    </group>
+                </group>
+
+                <notebook>
+                    <page string="Defect Detail" name="defect">
+                        <field name="defect_description"
+                               placeholder="What was found and how was it detected?"
+                               nolabel="1"/>
+		</page>
+
+		<page string="Corrective Actions" name="actions">
+   		 	<field name="action_ids">
+        		<list editable="bottom">
+            		<field name="name"/>
+            		<field name="owner_id"/>
+            		<field name="target_date"/>
+            		<field name="is_complete"/>
+        	</list>
+    	    </field>
+	</page>	
+
+                </notebook>
+            </sheet>
+        </form>
+    </field>
+</record>
+
+<record id="quality_nc_view_search" model="ir.ui.view">
+    <field name="name">quality.nc.search</field>
+    <field name="model">quality.nc</field>
+    <field name="arch" type="xml">
+        <search string="Non-Conformances">
+            <field name="name"/>
+            <field name="supplier_id"/>
+            <field name="part_number"/>
+
+            <filter name="open"
+                    string="Open"
+                    domain="[('state', '!=', 'closed')]"/>
+
+            <filter name="critical"
+                    string="Critical"
+                    domain="[('severity', '=', 'critical')]"/>
+
+            <filter name="large_qty"
+                    string="Large Quantity"
+                    domain="[('quantity_affected', '&gt;', 100)]"/>
+
+            <filter name="group_supplier"
+        	    string="Group by Supplier"
+             	    context="{'group_by': 'supplier_id'}"/>
+
+	   <filter name="group_severity"
+       		   string="Group by Severity"
+                   context="{'group_by': 'severity'}"/>
+        </search>
+    </field>
+</record>
+
+</odoo>

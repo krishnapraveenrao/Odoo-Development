@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_report_quality_nc" model="ir.actions.report">
+        <field name="name">Non-Conformance Report</field>
+        <field name="model">quality.nc</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">qltc_quality.report_quality_nc</field>
+        <field name="binding_model_id"
+               ref="qltc_quality.model_quality_nc"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_quality_nc">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Supplier Non-Conformance</h2>
+                        <h3>
+                            <span t-field="doc.name"/>
+                        </h3>
+
+                        <p>
+                            <strong>Supplier:</strong>
+                            <span t-field="doc.supplier_id"/>
+                        </p>
+
+                        <p>
+                            <strong>Part:</strong>
+                            <span t-field="doc.part_number"/>
+                        </p>
+
+                        <p>
+                            <strong>Quantity:</strong>
+                            <span t-field="doc.quantity_affected"/>
+                        </p>
+
+                        <p>
+                            <strong>Date Raised:</strong>
+                            <span t-field="doc.raise_date"/>
+                        </p>
+
+                        <p>
+                            <strong>Action Due:</strong>
+                            <span t-field="doc.due_date"/>
+                        </p>
+
+                        <p>
+                            <strong>Severity:</strong>
+                            <span t-field="doc.severity"/>
+                        </p>
+
+                        <h4>Defect</h4>
+                        <p>
+                            <span t-field="doc.defect_description"/>
+                        </p>
+
+                        <h4>Corrective Actions</h4>
+
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Owner</th>
+                                    <th>Target Date</th>
+                                    <th>Complete</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr t-foreach="doc.action_ids" t-as="act">
+                                    <td>
+                                        <span t-field="act.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="act.owner_id"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="act.target_date"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="act.is_complete"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <p t-if="not doc.action_ids">
+                            <em>No corrective actions recorded.</em>
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
