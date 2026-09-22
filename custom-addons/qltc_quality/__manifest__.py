@@ -10,7 +10,7 @@ Records	defects	found	on	incoming	supplier	deliveries	and	tracks
 corrective	actions	through	to	closure.
 """,
 				'author':	'Quantum	Leap	Trainers	and	Consultants',
-				'website':	'https://peggingyouahead.qltc.in/',
+				'website':	'www.qltc.in/',
 				'license': 'LGPL-3',
 				'depends': [
                    'base',
