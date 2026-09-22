@@ -1,6 +1,6 @@
 {
 				'name':	'Qltc	Quality	—	Supplier	Non-Conformance',
-				'version':	'1.0.1',
+				'version':	'1.0.2',
 				'category':	'Manufacturing/Quality',
 				'summary':	'Record	and	track	supplier	non-conformances	through	to	closure.',
 				'description':	"""
